@@ -60,7 +60,18 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2, 'Game Over', scoreConfig).setOrigin(0.5)
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'R to Restart or ← for menu', scoreConfig).setOrigin(0.5)
             this.gameOver= true
+            this.music.stop();
         }, null, this)
+
+
+        //play music and loop
+        //https://stackoverflow.com/questions/34210393/looping-audio-in-phaser
+        this.music = this.sound.add('music', {volume: .5})
+        this.music.loop = true;
+        if (!this.music.isPlaying) {
+            this.music.play();
+        }
+        
     }
 
     update(){
@@ -134,13 +145,13 @@ class Play extends Phaser.Scene {
                 this.sound.play('sfx-explosion2')
                 break;
             case 2:
-                this.sound.play('sfx-explosion3')
+                this.sound.play('sfx-explosion3', {volume:.2})
                 break;
             case 3:
                 this.sound.play('sfx-explosion4')
                 break;
             case 4:
-                this.sound.play('sfx-explosion5')
+                this.sound.play('sfx-explosion5', {volume:.7})
                 break;
             default:
                 this.sound.play('sfx-explosion')
