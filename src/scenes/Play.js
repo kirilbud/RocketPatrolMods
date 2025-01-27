@@ -46,7 +46,7 @@ class Play extends Phaser.Scene {
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            alighn: 'right',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -55,6 +55,7 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig)
 
+        this.timeRight = this.add.text(game.config.width - borderUISize*4.5, borderUISize + borderPadding*2, this.p1Score, scoreConfig)
 
         this.gameOver = false
         //end clock
@@ -87,6 +88,8 @@ class Play extends Phaser.Scene {
     }
 
     update(){
+
+        this.timeRight.text = Math.floor(this.clock.getRemaining()/1000)
 
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.scene.restart()
@@ -180,7 +183,7 @@ class Play extends Phaser.Scene {
         
         this.emitter.explode(50, x+32, y+16)
         //re enable ship after given time
-        this.clock = this.time.delayedCall(900, () => {
+        this.clock2 = this.time.delayedCall(900, () => {
             ship.reset()
             ship.alpha = 1
         }, null, this)
