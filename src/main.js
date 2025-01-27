@@ -13,6 +13,7 @@ Sources:
 Music: made in Beepbox
 sfx: made in sfxr.me
 Sprites: Made in Aseprite
+in game music and art is made by me
 */
 
 
