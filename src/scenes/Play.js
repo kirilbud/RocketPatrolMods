@@ -18,9 +18,12 @@ class Play extends Phaser.Scene {
         //game assets
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(.5,0)
 
-        this.ship01 = new SpaceShip(this, game.config.width + borderUISize * 6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0,0)
-        this.ship02 = new SpaceShip(this, game.config.width + borderUISize * 3, borderUISize*5 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0,0)
-        this.ship03 = new SpaceShip(this, game.config.width, borderUISize*6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0)
+        this.alien = new SpaceShip(this, game.config.width + borderUISize * 6, borderUISize*4, 'alien', 0, 100).setOrigin(0,0)
+        this.alien.moveSpeed = this.alien.moveSpeed * 1.2
+
+        this.ship01 = new SpaceShip(this, game.config.width + borderUISize * 6, borderUISize*5, 'spaceship', 0, 30).setOrigin(0,0)
+        this.ship02 = new SpaceShip(this, game.config.width + borderUISize * 3, borderUISize*6 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0,0)
+        this.ship03 = new SpaceShip(this, game.config.width, borderUISize*7 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0)
 
 
         //green top
@@ -71,7 +74,7 @@ class Play extends Phaser.Scene {
 
         //play music and loop
         //https://stackoverflow.com/questions/34210393/looping-audio-in-phaser
-        this.music = this.sound.add('music', {volume: .0 })
+        this.music = this.sound.add('music', {volume: .2 })
         this.music.loop = true;
         if (!this.music.isPlaying) {
             this.music.play();
@@ -106,11 +109,17 @@ class Play extends Phaser.Scene {
         if (!this.gameOver) {
             this.p1Rocket.update()
 
+            this.alien.update()
+
             this.ship01.update()
             this.ship02.update()
             this.ship03.update()
         }
 
+        if (this.checkCollision(this.p1Rocket, this.alien)) {
+            this.p1Rocket.reset()
+            this.shipExplode(this.alien)
+        }
 
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset()
