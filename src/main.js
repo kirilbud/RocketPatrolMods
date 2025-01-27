@@ -1,11 +1,12 @@
 /*
 Name: Kiril Saltz
 Mod Title: Rocket Patrol: New Special Edition U Remastered Deluxe
-Hours: 1
+Hours: 3
 Mods:
 -4 Additional explostion sounds (3 Points)
 -Music (1 point)
-
+-parallax scrolling Background (3 Points)
+-using particle emmitter for explosion (5 Points)
 Sources:
 Music: made in Beepbox
 sfx: made in sfxr.me

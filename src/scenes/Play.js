@@ -10,6 +10,10 @@ class Play extends Phaser.Scene {
 
         //space backgrount
         this.starfield = this.add.tileSprite(0,0,640,480,'starfield').setOrigin(0,0)
+        this.starfield2 = this.add.tileSprite(0,0,640,480,'starfield2').setOrigin(0,0)
+        this.starfield3 = this.add.tileSprite(0,0,640,480,'starfield3').setOrigin(0,0)
+
+        
 
         //game assets
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(.5,0)
@@ -66,11 +70,19 @@ class Play extends Phaser.Scene {
 
         //play music and loop
         //https://stackoverflow.com/questions/34210393/looping-audio-in-phaser
-        this.music = this.sound.add('music', {volume: .5})
+        this.music = this.sound.add('music', {volume: .0 })
         this.music.loop = true;
         if (!this.music.isPlaying) {
             this.music.play();
         }
+        
+
+        this.emitter = this.add.particles(0, 0, 'explode', {
+            speed: 150,
+            scale: {start: .5, end: .1},
+            lifespan: 500
+        });
+        this.emitter.stop()
         
     }
 
@@ -84,7 +96,9 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene")
         }
 
-        this.starfield.tilePositionX -= 4 
+        this.starfield.tilePositionX -= .1 
+        this.starfield2.tilePositionX -= .2 
+        this.starfield3.tilePositionX -= .7 
 
         if (!this.gameOver) {
             this.p1Rocket.update()
@@ -124,6 +138,10 @@ class Play extends Phaser.Scene {
     shipExplode(ship){
         ship.alpha = 0
 
+        let x = ship.x
+        let y = ship.y
+
+        /*
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0)
         boom.anims.play('explode')
         boom.on('animationcomplete', () => {
@@ -131,7 +149,7 @@ class Play extends Phaser.Scene {
             ship.alpha = 1
             boom.destroy()
         })
-
+        */
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
 
@@ -158,5 +176,13 @@ class Play extends Phaser.Scene {
                 break;
         }
         
+        //explosion particles
+        
+        this.emitter.explode(50, x+32, y+16)
+        //re enable ship after given time
+        this.clock = this.time.delayedCall(900, () => {
+            ship.reset()
+            ship.alpha = 1
+        }, null, this)
     }
 }
